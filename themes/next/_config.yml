@@ -45,12 +45,12 @@ cache:
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine them on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: /images/favicon-16x16-next.png
-  medium: /images/favicon-32x32-next.png
-  apple_touch_icon: /images/apple-touch-icon-next.png
-  safari_pinned_tab: /images/logo.svg
-  #android_manifest: /images/manifest.json
-  #ms_browserconfig: /images/browserconfig.xml
+  small: /images/favicon-16x16.png
+  medium: /images/favicon-32x32.png
+  apple_touch_icon: /images/apple-touch-icon.png
+  safari_pinned_tab: /images/safari-pinned-tab.svg
+  android_manifest: /images/site.webmanifest
+  ms_browserconfig: /images/browserconfig.xml
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link, and install hexo-generator-feed: `npm install hexo-generator-feed --save`.
@@ -537,7 +537,7 @@ valine:
   appid: bazIffAaV1BiSjbtH6NXtJC1-gzGzoHsz # your leancloud application appid
   appkey: lQkjbvDWsuzKyNDFie2njMX3 # your leancloud application appkey
   notify: false # mail notifier, See: https://github.com/xCss/Valine/wiki
-  verify: false # Verification code
+  verify: true # Verification code
   placeholder: Just go go # comment box placeholder
   avatar: mm # gravatar style
   guest_info: nick,mail,link # custom comment header
