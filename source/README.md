@@ -6,9 +6,9 @@
 - config deployment: modify `_config.yml`
 ```yml
 deploy:
-    type: git
-    repository: git_url
-    branch: master
+  type: git
+  repository: https://github.com/anonymouss/anonymouss.github.io.git
+  branch: master
 ```
 - install deploy ext: `npm install hexo-deployer-git --save`
 - deploy: `hexo d -g`
@@ -24,18 +24,18 @@ Next: `git clone https://github.com/theme-next/hexo-theme-next themes/next`
 
 #### notes
 
-> themes/next 's .git folder is removed
+> themes/next 's .git folder is removed, don't make it as git submodule
 
 - config files in branch `hexo-config`
 - blog static files in branch `master`
 
-#### on a new machine
+## switch to a new machine
 
 - `git clone https://github.com/anonymouss/anonymouss.github.io.git`
 - `cd anonymouss.github.io`
 - `git checkout hexo-config`
-- `npm install hexo`
+- `npm install hexo -g`
 - `npm install`
-- `npm install hexo-deployer-git`
+- `npm install hexo-deployer-git --save`
 - make changes
-- `./deploy.sh`
+- `./deploy.sh` # Hexo automatically commit to branch master
