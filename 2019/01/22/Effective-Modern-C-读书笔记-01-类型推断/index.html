@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg?v=6.7.0" color="#222">
+
+
+  <link rel="manifest" href="/images/site.webmanifest">
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Chapter 01. 类型推导 条目 1：理解模板类型推导 条目 2：理解auto类型推导 条目 3：理解decltype 条目 4：知道如何查看编译器推导出的类型  0. 准备为了可以直观的知道编译器推导出的类型结果是否与我们所想的一致，首先来定义一个可以正确完整显示变量类型的帮助宏。由于C++标准库中的typeid(expr).name()会忽略cv限定符，并且其结果在gcc下不够直观（诸如">
+<meta name="keywords" content="C++,Effective Modern C++,Modern C++,C++ 11,C++ 14">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Effective Modern C++ 读书笔记: 01 类型推断">
+<meta property="og:url" content="http://jjcong.com/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/index.html">
+<meta property="og:site_name" content="Meow">
+<meta property="og:description" content="Chapter 01. 类型推导 条目 1：理解模板类型推导 条目 2：理解auto类型推导 条目 3：理解decltype 条目 4：知道如何查看编译器推导出的类型  0. 准备为了可以直观的知道编译器推导出的类型结果是否与我们所想的一致，首先来定义一个可以正确完整显示变量类型的帮助宏。由于C++标准库中的typeid(expr).name()会忽略cv限定符，并且其结果在gcc下不够直观（诸如">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-01-22T13:36:12.799Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Effective Modern C++ 读书笔记: 01 类型推断">
+<meta name="twitter:description" content="Chapter 01. 类型推导 条目 1：理解模板类型推导 条目 2：理解auto类型推导 条目 3：理解decltype 条目 4：知道如何查看编译器推导出的类型  0. 准备为了可以直观的知道编译器推导出的类型结果是否与我们所想的一致，首先来定义一个可以正确完整显示变量类型的帮助宏。由于C++标准库中的typeid(expr).name()会忽略cv限定符，并且其结果在gcc下不够直观（诸如">
+
+
+
+
+
+
+  <link rel="canonical" href="http://jjcong.com/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Effective Modern C++ 读书笔记: 01 类型推断 | Meow</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Meow</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://jjcong.com/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="jcong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meow">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Effective Modern C++ 读书笔记: 01 类型推断
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-22 14:32:25 / 修改时间：21:36:12" itemprop="dateCreated datePublished" datetime="2019-01-22T14:32:25+08:00">2019-01-22</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/" class="leancloud_visitors" data-flag-title="Effective Modern C++ 读书笔记: 01 类型推断">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Chapter-01-类型推导"><a href="#Chapter-01-类型推导" class="headerlink" title="Chapter 01. 类型推导"></a>Chapter 01. 类型推导</h2><ul>
+<li>条目 1：理解模板类型推导</li>
+<li>条目 2：理解<code>auto</code>类型推导</li>
+<li>条目 3：理解<code>decltype</code></li>
+<li>条目 4：知道如何查看编译器推导出的类型</li>
+</ul>
+<h3 id="0-准备"><a href="#0-准备" class="headerlink" title="0. 准备"></a>0. 准备</h3><p>为了可以直观的知道编译器推导出的类型结果是否与我们所想的一致，首先来定义一个可以正确完整显示变量类型的帮助宏。由于C++标准库中的<a href="https://zh.cppreference.com/w/cpp/language/typeid" target="_blank" rel="noopener"><code>typeid(expr).name()</code></a>会忽略<code>cv</code>限定符，并且其结果在gcc下不够直观（诸如：<em><code>NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE</code></em>，其实是<code>std::string</code>）。因此，这里直接使用<strong>条目4</strong>中提到的<strong><code>boost</code></strong>库中提供的<code>boost::typeindex::typeid_with_cvr</code>的方法。<em>PS: <code>typeid</code>可以参考此文章自定义模板来获取完整类型名：<a href="https://www.cnblogs.com/zfyouxi/p/5060288.html" target="_blank" rel="noopener">怎样在C++中获得完整的类型名称</a></em></p>
+<p>宏定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;boost/type_index.hpp&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO_TYPE(T, U)                                             \</span></span><br><span class="line">&#123;                                                                   \</span><br><span class="line">    <span class="keyword">using</span> boost::typeindex::type_id_with_cvr;                       \</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>.width(<span class="number">10</span>), <span class="built_in">std</span>::<span class="built_in">cout</span>.setf(<span class="built_in">std</span>::ios::left);            \</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; #U &lt;&lt; <span class="string">" = "</span>                                        \</span><br><span class="line">              &lt;&lt; type_id_with_cvr&lt;T&gt;().pretty_name()                \</span><br><span class="line">              &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;                                         \</span><br><span class="line">&#125;                                                                   \</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO_T_TYPE(T)          ECHO_TYPE(T, T)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO_PARAM_TYPE(param)  ECHO_TYPE(decltype(param), param)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ECHO()                                                      \</span></span><br><span class="line">&#123;                                                                   \</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">string</span>(<span class="number">30</span>, <span class="string">'-'</span>) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;                 \</span><br><span class="line">    ECHO_T_TYPE(T);                                                 \</span><br><span class="line">    ECHO_PARAM_TYPE(param);                                         \</span><br><span class="line">&#125;                                                                   \</span><br></pre></td></tr></table></figure>
+<h3 id="1-模板推导"><a href="#1-模板推导" class="headerlink" title="1. 模板推导"></a>1. 模板推导</h3><p>假定模板与调用函数定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(paramType param)</span></span>;</span><br><span class="line"></span><br><span class="line">f(expr);</span><br></pre></td></tr></table></figure>
+<p><code>T</code>和<code>paramType</code>由编译器在编译期间根据<code>expr</code>推导得到，<code>T</code>的推导结果和<code>paramType</code>的声明形式有关。模板推导有三种情况：</p>
+<h4 id="1-1-paramType声明为引用或指针（非通用引用T-amp-amp-universal-reference）"><a href="#1-1-paramType声明为引用或指针（非通用引用T-amp-amp-universal-reference）" class="headerlink" title="1.1 paramType声明为引用或指针（非通用引用T&amp;&amp; / universal reference）"></a>1.1 <code>paramType</code>声明为引用或指针（非通用引用<code>T&amp;&amp;</code> / universal reference）</h4><p><code>T</code>的推导规则：</p>
+<ul>
+<li><p>如果<code>expr</code>为引用，则忽略引用部分</p>
+</li>
+<li><p>然后匹配<code>expr</code>的类型和<code>paramType</code>的声明类型</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这种情形的模板申明如下</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f1</span><span class="params">(T &amp;param)</span> </span>&#123;</span><br><span class="line">    ECHO();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用函数</span></span><br><span class="line"><span class="keyword">int</span> v = <span class="number">10</span>;              <span class="comment">// int</span></span><br><span class="line"><span class="keyword">int</span> &amp;rv = v;             <span class="comment">// int&amp;</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> cv = v;        <span class="comment">// const int</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> &amp;crv = v;      <span class="comment">// const int&amp;</span></span><br><span class="line">f1(v);                   <span class="comment">// T is int, paramType is int&amp;</span></span><br><span class="line">f1(rv);                  <span class="comment">// T is int, paramType is int&amp;</span></span><br><span class="line">f1(cv);                  <span class="comment">// T is const int, paramType is const int&amp;</span></span><br><span class="line">f1(crv);                 <span class="comment">// T is const int, paramType is const int&amp;</span></span><br><span class="line"><span class="comment">// 实际运行结果</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const</span></span><br><span class="line"><span class="comment">param      = int const&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const</span></span><br><span class="line"><span class="comment">param      = int const&amp;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>注意，<strong><code>T</code>的类型推导受到<code>paramType</code>声明形式的影响</strong>。如果这里<code>paramType</code>声明为<code>const T&amp;</code>形式，此时如果<code>expr</code>是<code>const int&amp;</code>类型，根据推导规则，首先去除引用剩下<code>const int</code>，但由于此时<code>paramType</code>已经声明为<code>const</code>，于是<code>T</code>不在需要<code>const</code>，最终<strong><code>T</code>的推导结果为<code>int</code>，<code>paramType</code>为<code>const int&amp;</code></strong>。另外，这种情况下，<code>paramType</code>声明为常量左值引用形式，如果是非常量左值引用形式，即<code>T&amp;</code>，那就无法推导类似于<code>f(2)</code>这种情况（无法调用，编译错误）。因为<code>2</code>是纯右值(prvaue)，对于左值引用，除非它是<code>const</code>的，否则不可以指向右值。</p>
+<h4 id="1-2-paramType声明为通用引用T-amp-amp"><a href="#1-2-paramType声明为通用引用T-amp-amp" class="headerlink" title="1.2 paramType声明为通用引用T&amp;&amp;"></a>1.2 <code>paramType</code>声明为通用引用<code>T&amp;&amp;</code></h4><p><code>T</code>的推导规则：</p>
+<ul>
+<li><p>若<code>expr</code>为左值，<strong><code>T</code>和<code>paramType</code>都会被推导为左值引用类型（<code>T&amp;</code>）</strong>。这是很特殊的一点！一方面，只有这种情况时，<code>T</code>才会被推导为引用类型；另一方面，即便此时<code>paramType</code>被声明为右值引用的形式，其推导结果仍然为左值引用。</p>
+</li>
+<li><p>若<code>expr</code>为右值，则规则同<code>1.1</code>。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模板声明</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f2</span><span class="params">(T &amp;&amp;param)</span> </span>&#123;</span><br><span class="line">    ECHO();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用函数</span></span><br><span class="line">f2(v);                  <span class="comment">// T and paramType are both int&amp;</span></span><br><span class="line">f2(rv);                 <span class="comment">// T and paramType are both int&amp;</span></span><br><span class="line">f2(cv);                 <span class="comment">// T and paramType are both const int&amp;</span></span><br><span class="line">f2(crv);                <span class="comment">// T and paramType are both const int&amp;</span></span><br><span class="line">f2(<span class="built_in">std</span>::move(v));       <span class="comment">// T is int, paramType is int&amp;&amp;</span></span><br><span class="line">f2(<span class="built_in">std</span>::move(rv));      <span class="comment">// T is int, paramType is int&amp;&amp;</span></span><br><span class="line">f2(<span class="built_in">std</span>::move(cv));      <span class="comment">// T is const int, paramType is int&amp;&amp;</span></span><br><span class="line">f2(<span class="built_in">std</span>::move(crv));     <span class="comment">// T is const int, paramType is int&amp;&amp;</span></span><br><span class="line"><span class="comment">// 运行结果</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int&amp;</span></span><br><span class="line"><span class="comment">param      = int&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int&amp;</span></span><br><span class="line"><span class="comment">param      = int&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const&amp;</span></span><br><span class="line"><span class="comment">param      = int const&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const&amp;</span></span><br><span class="line"><span class="comment">param      = int const&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int&amp;&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int&amp;&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const</span></span><br><span class="line"><span class="comment">param      = int const&amp;&amp;</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int const</span></span><br><span class="line"><span class="comment">param      = int const&amp;&amp;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-3-paramType既不是引用也不指针形式（值传递）"><a href="#1-3-paramType既不是引用也不指针形式（值传递）" class="headerlink" title="1.3 paramType既不是引用也不指针形式（值传递）"></a>1.3 <code>paramType</code>既不是引用也不指针形式（值传递）</h4><p><code>T</code>的推导规则：</p>
+<ul>
+<li><p>和前面一样，若<code>expr</code>是引用，则忽略引用部分。</p>
+</li>
+<li><p>忽略引用之后，若<code>expr</code>是<code>const</code>或<code>volatile</code>的，<code>const</code>和<code>volatile</code>也忽略。即<strong>引用、<code>const</code>、<code>volatile</code></strong>在这种情况下通通忽略。这是合理的，因为值传递是实参的一份临时拷贝，对其修改并不会影响到实参，所以不必受到实参cv条件限制。</p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 模板定义</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f3</span><span class="params">(T param)</span> </span>&#123;</span><br><span class="line">    ECHO();</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 函数调用</span></span><br><span class="line">f3(cv);                 <span class="comment">// both T and paramType are int</span></span><br><span class="line">f3(crv);                <span class="comment">// both T and paramType are int</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *str1&#123;<span class="string">"something"</span>&#125;;  <span class="comment">// str1 is const char*</span></span><br><span class="line"><span class="comment">// !note! ISO C++ forbids `const char*` to `char *`</span></span><br><span class="line"><span class="keyword">char</span> *<span class="keyword">const</span> str2&#123;<span class="string">"something"</span>&#125;;  <span class="comment">// str2 is char* const</span></span><br><span class="line">f3(str1);               <span class="comment">// both T and paramType is const char*</span></span><br><span class="line">f3(str2);               <span class="comment">// both T and paramType is char*</span></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = int</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = char const*</span></span><br><span class="line"><span class="comment">param      = char const*</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = char*</span></span><br><span class="line"><span class="comment">param      = char*</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-4-数组实参"><a href="#1-4-数组实参" class="headerlink" title="*1.4 数组实参"></a>*1.4 数组实参</h4><p>数组通常和指针联系在一起，因而数组形参通常都可以声明为指针形式。如<code>void func(int *arr);</code>和<code>void func(int arr[]);</code>。这两种形参声明，数组作实参传递时都会退化为指针，因此其推导规则和指针是一样的。</p>
+<p>但是，<strong>当数组形参声明为引用时</strong>，数组就不会退化为指针了（包括通用引用）。这时的推导规则就应当使用数组本身类型来推导。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;    <span class="comment">// int[3]</span></span><br><span class="line"></span><br><span class="line">f1(a);                  <span class="comment">// T is int[3], paramType is int(&amp;)[3]</span></span><br><span class="line">f2(a);                  <span class="comment">// both T is int(&amp;)[3]</span></span><br><span class="line">f3(a);                  <span class="comment">// both T and paramType are int*</span></span><br></pre></td></tr></table></figure>
+<p>这样特性还可以用来编译期获取数组维度：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="built_in">std</span>::<span class="keyword">size_t</span> getArrayLength(<span class="keyword">const</span> T (&amp;)[N]) &#123;</span><br><span class="line">    <span class="keyword">return</span> N;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">auto</span> len = getArrayLength(a);</span><br><span class="line"><span class="comment">// 编译期获得数组长度还有另外两种方法</span></span><br><span class="line"><span class="keyword">auto</span> len = <span class="keyword">sizeof</span>(a) / <span class="keyword">sizeof</span>(a[<span class="number">0</span>]);            <span class="comment">// 使用sizeof</span></span><br><span class="line"><span class="keyword">auto</span> len = <span class="built_in">std</span>::extent&lt;<span class="keyword">decltype</span>(a)&gt;::value;     <span class="comment">// 使用std::extent</span></span><br></pre></td></tr></table></figure>
+<h4 id="1-5-函数实参"><a href="#1-5-函数实参" class="headerlink" title="*1.5 函数实参"></a>*1.5 函数实参</h4><p>函数实参和数组实参一样，也会退化为指针，推导规则和数组类似。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">funcToDeduce</span><span class="params">(<span class="keyword">int</span>)</span></span>;             <span class="comment">// type: void(int)</span></span><br><span class="line"></span><br><span class="line">f1(funcToDeduce);                   <span class="comment">// T is void(int), paramType is void(&amp;)(int)</span></span><br><span class="line">f2(funcToDeduce);                   <span class="comment">// both T and paramType is void(&amp;)(int)</span></span><br><span class="line">f3(funcToDeduce);                   <span class="comment">// both T and paramType is void(*)(int）</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-auto推导"><a href="#2-auto推导" class="headerlink" title="2. auto推导"></a>2. <code>auto</code>推导</h3><p><code>auto</code>推导和模板推导的规则基本一致，<code>auto</code>就相当于模板推导中的<code>T</code>。<code>auto</code>推导完全可以套用模板推导规则，但是这里有一个特例。即从初始化列表推导时要特殊注意，模板是不能从初始化列表推导的。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">auto</span> x1 = <span class="number">1</span>;            <span class="comment">// int</span></span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">x2</span><span class="params">(<span class="number">1</span>)</span></span>;             <span class="comment">// int</span></span><br><span class="line"><span class="keyword">auto</span> x3 = &#123;<span class="number">1</span>&#125;;          <span class="comment">// std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="keyword">auto</span> x4&#123;<span class="number">1</span>&#125;;             <span class="comment">// int since C++17, std::initializer_list&lt;int&gt; before C++17</span></span><br><span class="line"><span class="keyword">auto</span> x5 = &#123;<span class="number">1</span>, <span class="number">2</span>&#125;;       <span class="comment">// obviously std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="comment">// auto x6&#123;1, 2&#125;;       // FORBIDDEN</span></span><br><span class="line">ECHO_PARAM_TYPE(x1);</span><br><span class="line">ECHO_PARAM_TYPE(x2);</span><br><span class="line">ECHO_PARAM_TYPE(x3);</span><br><span class="line">ECHO_PARAM_TYPE(x4);</span><br><span class="line">ECHO_PARAM_TYPE(x5);</span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">x1         = int</span></span><br><span class="line"><span class="comment">x2         = int</span></span><br><span class="line"><span class="comment">x3         = std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="comment">x4         = int</span></span><br><span class="line"><span class="comment">x5         = std::initializer_list&lt;int&gt;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p><strong>NOTE</strong>: <em>关于<code>x4</code>，提案</em><a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3922.html" target="_blank" rel="noopener">N3932</a><em>修改了<code>auto</code>的推导规则，所以从C++17起，<code>x4</code>被推导为<code>int</code>。但是在我的机器上（GCC 8.2），即使限制使用C++14，<code>x4</code>也被推导为<code>int</code>而不是<code>std::initializer_list&lt;int&gt;</code>。并且，</em><a href="https://zh.cppreference.com/w/cpp/language/auto" target="_blank" rel="noopener">CppReference</a><em>中说，<code>x6</code>在C++17起视为错误，之前会被推导为<code>std::initializer_list&lt;int&gt;</code>，而我的编译器上即使限制为C++14，仍然会被视为错误。</em></p>
+<p>需要传递初始化列表实参给模板推导时，模板<code>paramType</code>需要显式的声明为初始化列表形式，即：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f4</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">initializer_list</span>&lt;T&gt; &amp;&amp;param)</span> </span>&#123;</span><br><span class="line">    ECHO();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">f4(&#123;<span class="number">1</span>&#125;);                <span class="comment">// T is int, paramType is std::initializer_list&lt;int&gt;&amp;&amp;</span></span><br><span class="line"><span class="comment">// 输出</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">------------------------------</span></span><br><span class="line"><span class="comment">T          = int</span></span><br><span class="line"><span class="comment">param      = std::initializer_list&lt;int&gt;&amp;&amp;</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>此外，从C++14起，<code>auto</code>可以推导函数返回类型（C++11需要显示指定或者使用尾置返回类型），并且可以修饰<code>lambda</code>表达式形参。作为这些用法是，<code>auto</code>使用模板的推导规则，因而无法推导列表初始化</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// auto generateInitList() &#123;</span></span><br><span class="line"><span class="comment">//     return &#123;1&#125;;              // Compile Error, decltype(auto) 也不行</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// std::vector&lt;int&gt; vec;</span></span><br><span class="line"><span class="comment">// auto resetVector = [&amp;] (const auto&amp; v) &#123;</span></span><br><span class="line"><span class="comment">//     vec = v;</span></span><br><span class="line"><span class="comment">// &#125;;</span></span><br><span class="line"><span class="comment">// resetVector(&#123;1&#125;);            // 编译错误</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-decltype推导"><a href="#3-decltype推导" class="headerlink" title="3. decltype推导"></a>3. <code>decltype</code>推导</h3><p><code>decltype</code>与<code>auto</code>和模板不同，它将返回精确的类型（<code>auto</code>和模板在某些情况会去cv限定符和引用），<code>ECHO_PARAM_TYPE</code>宏就是使用<code>decltype</code>来获取对象精确类型的，</p>
+<p>有时候，模板函数的返回值需要根据参数来推导，C++11中可以使用<code>decltype</code>尾置返回类型（如前所述，C++14起才支持<code>auto</code>直接推导函数返回类型），</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span> Index&gt;</span><br><span class="line">auto getIndexAt1(Container&amp; c, Index i) -&gt; decltype(c[i]) &#123;</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设传入的容器为<code>std::vector&lt;int&gt;</code>，那么返回类型为<code>int&amp;</code>。</p>
+<p>C++14起，<code>auto</code>可以直接从<code>return</code>语句推导函数返回值了，即不在需要尾置返回类型。这种写法方便多了，但是也存在一些陷阱。因为这里<code>auto</code>使用的是模板推导规则，它可能丢弃cv限定符与引用信息，不像<code>decltype</code>可以推导精确类型。比如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span> Index&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">getIndexAt2</span><span class="params">(Container&amp; c, Index i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>假设传入的容器为<code>std::vector&lt;int&gt;</code>，则推导结果为<code>int</code>。和前一个尾置返回类型的例子相比，它缺失了引用信息。当然我们可以使用<code>auto &amp;</code>来补上，但这并不make sense，毕竟这是模板函数，下次类型就是非引用怎么办？解决办法是使用<strong><code>decltype(auto)</code></strong>（C++14）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span> Index&gt;</span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) getIndexAt3(Container&amp; c, Index i) &#123;</span><br><span class="line">    <span class="keyword">return</span> c[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就没有问题了，完美！</p>
+<p>还有更加完善的做法，就是使用完美转发（perfect forwarding）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// perfect forwarding</span></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container, <span class="keyword">typename</span> Index&gt;</span><br><span class="line"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) getIndexAt4(Container &amp;&amp;c, Index i) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">std</span>::forward&lt;Container&gt;(c)[i];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完美转发后面会有专题去讲，就此带过。</p>
+<p><code>decltype(e)</code>的<a href="https://zh.cppreference.com/w/cpp/language/decltype" target="_blank" rel="noopener">推导规则</a>：</p>
+<ol>
+<li><p>若<code>e</code>是没有使用小括号<code>()</code>括起来的表达式，则其推导结果就是其声明的类型。</p>
+</li>
+<li><p>若<code>e</code>是<code>T</code>类型的<code>xvalue</code>，则推导结果为<code>T&amp;&amp;</code>，右值引用。</p>
+</li>
+<li><p>若<code>e</code>是<code>T</code>类型的<code>lvalue</code>，则推导结果为<code>T&amp;</code>，左值引用。（<strong>若同时满足 1，优先使用 1的规则。所以，需要使用这条规则通常要加括号括起来</strong>）。</p>
+</li>
+<li><p>若<code>e</code>是<code>T</code>类型的<code>prvalue</code>，则推导结果为<code>T</code>。（字面值常量，临时变量等）。</p>
+</li>
+</ol>
+<p><strong>NOTE</strong>：<code>int a = 1, b = 2;</code> 此时<code>decltype((a + b))</code>是<code>int</code>而不是<code>int&amp;</code>。因为虽然加了括号，<code>a + b</code>是值为<code>prvalue</code>。</p>
+<p><a href="https://gitlab.com/jcong/effective-modern-cpp-notes/blob/master/codes/01-deducing_types.cpp" target="_blank" rel="noopener"><strong>related codes</strong></a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>jcong</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://jjcong.com/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/" title="Effective Modern C++ 读书笔记: 01 类型推断">http://jjcong.com/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/C/" rel="tag"># C++</a>
+          
+            <a href="/tags/Effective-Modern-C/" rel="tag"># Effective Modern C++</a>
+          
+            <a href="/tags/Modern-C/" rel="tag"># Modern C++</a>
+          
+            <a href="/tags/C-11/" rel="tag"># C++ 11</a>
+          
+            <a href="/tags/C-14/" rel="tag"># C++ 14</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/21/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="jcong">
+            
+              <p class="site-author-name" itemprop="name">jcong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/anonymouss" title="GitHub &rarr; https://github.com/anonymouss" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:jjcong@outlook.com" title="E-Mail &rarr; mailto:jjcong@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Chapter-01-类型推导"><span class="nav-number">1.</span> <span class="nav-text">Chapter 01. 类型推导</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-准备"><span class="nav-number">1.1.</span> <span class="nav-text">0. 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-模板推导"><span class="nav-number">1.2.</span> <span class="nav-text">1. 模板推导</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-paramType声明为引用或指针（非通用引用T-amp-amp-universal-reference）"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.1 paramType声明为引用或指针（非通用引用T&amp;&amp; / universal reference）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-paramType声明为通用引用T-amp-amp"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2 paramType声明为通用引用T&amp;&amp;</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-paramType既不是引用也不指针形式（值传递）"><span class="nav-number">1.2.3.</span> <span class="nav-text">1.3 paramType既不是引用也不指针形式（值传递）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-数组实参"><span class="nav-number">1.2.4.</span> <span class="nav-text">*1.4 数组实参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-函数实参"><span class="nav-number">1.2.5.</span> <span class="nav-text">*1.5 函数实参</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-auto推导"><span class="nav-number">1.3.</span> <span class="nav-text">2. auto推导</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-decltype推导"><span class="nav-number">1.4.</span> <span class="nav-text">3. decltype推导</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jcong</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.8.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.7.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/schemes/muse.js?v=6.7.0"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+<script src="//cdn1.lncld.net/static/js/3.11.1/av-min.js"></script>
+
+
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: true,
+    notify: false,
+    appId: 'bazIffAaV1BiSjbtH6NXtJC1-gzGzoHsz',
+    appKey: 'lQkjbvDWsuzKyNDFie2njMX3',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: true
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+  <script src="/js/src/js.cookie.js?v=6.7.0"></script>
+  <script src="/js/src/scroll-cookie.js?v=6.7.0"></script>
+
+
+  
+
+  
+
+  
+  <style>
+    .copy-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #333;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background-color: #eee;
+      background-image: linear-gradient(#fcfcfc, #eee);
+      border: 1px solid #d5d5d5;
+      border-radius: 3px;
+      user-select: none;
+      outline: 0;
+    }
+
+    .highlight-wrap .copy-btn {
+      transition: opacity .3s ease-in-out;
+      opacity: 0;
+      padding: 2px 6px;
+      position: absolute;
+      right: 4px;
+      top: 8px;
+    }
+
+    .highlight-wrap:hover .copy-btn,
+    .highlight-wrap .copy-btn:focus {
+      opacity: 1
+    }
+
+    .highlight-wrap {
+      position: relative;
+    }
+  </style>
+  <script>
+    $('.highlight').each(function(i, e) {
+      var $wrap = $('<div>').addClass('highlight-wrap');
+      $(e).after($wrap);
+      $wrap.append($('<button>').addClass('copy-btn').append('复制').on('click', function(e) {
+        var code = $(this).parent().find('.code').find('.line').map(function(i, e) {
+          return $(e).text();
+        }).toArray().join('\n');
+        var ta = document.createElement('textarea');
+        var range = document.createRange(); //For Chrome
+        var sel = window.getSelection(); //For Chrome
+        var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+        ta.style.top = yPosition + 'px'; //Prevent page scroll
+        ta.style.position = 'absolute';
+        ta.style.opacity = '0';
+        ta.value = code;
+        ta.textContent = code; //For FireFox
+        ta.contentEditable = true;
+        ta.readOnly = false;
+        document.body.appendChild(ta);
+        range.selectNode(ta);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        ta.setSelectionRange(0, code.length);
+        var result = document.execCommand('copy');
+        
+          if (result) $(this).text('复制成功');
+          else $(this).text('复制失败');
+        
+        ta.blur(); //For iOS
+        $(this).blur();
+      })).on('mouseleave', function(e) {
+        var $b = $(this).find('.copy-btn');
+        setTimeout(function() {
+          $b.text('复制');
+        }, 300);
+      }).append(e);
+    })
+  </script>
+
+
+  
+  
+
+  
+  
+
+  
+
+
+</body>
+</html>
