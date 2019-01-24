@@ -2,7 +2,7 @@
 title: C++ 实现简单的 golang `defer`
 date: 2019-01-24 22:42:56
 tags: C++
-catagories: C++
+categories: C++
 ---
 
 最近在看 golang，发现它的 `defer` 关键字很好用，可以将部分代码推迟到函数结束之后执行。
