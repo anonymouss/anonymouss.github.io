@@ -2,7 +2,7 @@
 title: C++ 实现简单的 golang `defer`
 date: 2019-01-24 22:42:56
 tags: C++
-catagories: C++
+categories: C++
 ---
 
 最近在看 golang，发现它的 `defer` 关键字很好用，可以将部分代码推迟到函数结束之后执行。
@@ -119,7 +119,7 @@ int main() {
     defer( std::cout << "deferred something... 1" << std::endl; );
     defer( std::cout << "deferred something... 2" << std::endl; );
 
-    func();
+    defer( func(); );
 
     std::cout << "bye..." << std::endl;
 }
@@ -128,11 +128,11 @@ int main() {
 输出：
 
 ```
+bye...
 entering function
 exiting function
 deferred something 2 in function
 deferred something 1 in function
-bye...
 deferred something... 2
 deferred something... 1
 ```
