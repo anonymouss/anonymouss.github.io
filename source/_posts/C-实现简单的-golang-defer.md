@@ -14,7 +14,6 @@ import "fmt"
 
 func main() {
 	defer fmt.Println("Defered things")
-
 	fmt.Println("Exit main")
 }
 ```
