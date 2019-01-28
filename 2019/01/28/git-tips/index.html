@@ -100,25 +100,25 @@
 
 
 
-  <meta name="description" content="最近在看 golang，发现它的 defer 关键字很好用，可以将部分代码推迟到函数结束之后执行。 12345678package mainimport &quot;fmt&quot;func main() &amp;#123;	defer fmt.Println(&quot;Defered things&quot;)	fmt.Println(&quot;Exit main&quot;)&amp;#125; 运行结果为： 123$ go run test.goExit m">
-<meta name="keywords" content="C++">
+  <meta name="description" content="日常 git tips，持续更新…  撤销单个文件修改 还没有add到stage   git checkout filename   add到stage但还没有commit   git reset HEAD filename // 移除暂存区 git checkout filename   已经commit   git reset HEAD^ // 回退 git checkout filenam">
+<meta name="keywords" content="git">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++ 实现简单的 golang `defer`">
-<meta property="og:url" content="http://jjcong.com/2019/01/24/C-实现简单的-golang-defer/index.html">
+<meta property="og:title" content="git tips">
+<meta property="og:url" content="http://jjcong.com/2019/01/28/git-tips/index.html">
 <meta property="og:site_name" content="Meow">
-<meta property="og:description" content="最近在看 golang，发现它的 defer 关键字很好用，可以将部分代码推迟到函数结束之后执行。 12345678package mainimport &quot;fmt&quot;func main() &amp;#123;	defer fmt.Println(&quot;Defered things&quot;)	fmt.Println(&quot;Exit main&quot;)&amp;#125; 运行结果为： 123$ go run test.goExit m">
+<meta property="og:description" content="日常 git tips，持续更新…  撤销单个文件修改 还没有add到stage   git checkout filename   add到stage但还没有commit   git reset HEAD filename // 移除暂存区 git checkout filename   已经commit   git reset HEAD^ // 回退 git checkout filenam">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-25T08:52:16.924Z">
+<meta property="og:updated_time" content="2019-01-28T05:15:25.622Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C++ 实现简单的 golang `defer`">
-<meta name="twitter:description" content="最近在看 golang，发现它的 defer 关键字很好用，可以将部分代码推迟到函数结束之后执行。 12345678package mainimport &quot;fmt&quot;func main() &amp;#123;	defer fmt.Println(&quot;Defered things&quot;)	fmt.Println(&quot;Exit main&quot;)&amp;#125; 运行结果为： 123$ go run test.goExit m">
+<meta name="twitter:title" content="git tips">
+<meta name="twitter:description" content="日常 git tips，持续更新…  撤销单个文件修改 还没有add到stage   git checkout filename   add到stage但还没有commit   git reset HEAD filename // 移除暂存区 git checkout filename   已经commit   git reset HEAD^ // 回退 git checkout filenam">
 
 
 
 
 
 
-  <link rel="canonical" href="http://jjcong.com/2019/01/24/C-实现简单的-golang-defer/">
+  <link rel="canonical" href="http://jjcong.com/2019/01/28/git-tips/">
 
 
 
@@ -128,7 +128,7 @@
   };
 </script>
 
-  <title>C++ 实现简单的 golang `defer` | Meow</title>
+  <title>git tips | Meow</title>
   
 
 
@@ -344,7 +344,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://jjcong.com/2019/01/24/C-实现简单的-golang-defer/">
+    <link itemprop="mainEntityOfPage" href="http://jjcong.com/2019/01/28/git-tips/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="jcong">
@@ -361,7 +361,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C++ 实现简单的 golang `defer`
+          <h1 class="post-title" itemprop="name headline">git tips
 
               
             
@@ -387,24 +387,12 @@
                 
               
 
-              <time title="创建时间：2019-01-24 22:42:56" itemprop="dateCreated datePublished" datetime="2019-01-24T22:42:56+08:00">2019-01-24</time>
+              <time title="创建时间：2019-01-28 13:00:47 / 修改时间：13:15:25" itemprop="dateCreated datePublished" datetime="2019-01-28T13:00:47+08:00">2019-01-28</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-01-25 16:52:16" itemprop="dateModified" datetime="2019-01-25T16:52:16+08:00">2019-01-25</time>
               
             
           </span>
@@ -421,7 +409,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/C/" itemprop="url" rel="index"><span itemprop="name">C++</span></a></span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/tools/" itemprop="url" rel="index"><span itemprop="name">tools</span></a></span>
 
                 
                 
@@ -439,8 +427,8 @@
                   <i class="fa fa-comment-o"></i>
                 </span>
             
-                <a href="/2019/01/24/C-实现简单的-golang-defer/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/24/C-实现简单的-golang-defer/" itemprop="commentCount"></span>
+                <a href="/2019/01/28/git-tips/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/01/28/git-tips/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -448,7 +436,7 @@
 
           
           
-            <span id="/2019/01/24/C-实现简单的-golang-defer/" class="leancloud_visitors" data-flag-title="C++ 实现简单的 golang `defer`">
+            <span id="/2019/01/28/git-tips/" class="leancloud_visitors" data-flag-title="git tips">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -479,26 +467,43 @@
       
 
       
-        <p>最近在看 golang，发现它的 <code>defer</code> 关键字很好用，可以将部分代码推迟到函数结束之后执行。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> fmt.Println(<span class="string">"Defered things"</span>)</span><br><span class="line">	fmt.Println(<span class="string">"Exit main"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>运行结果为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ go run test.go</span><br><span class="line">Exit main</span><br><span class="line">Defered things</span><br></pre></td></tr></table></figure>
-<p>C++ 中暂时还没有类似的功能，但是要自己实现一个类型的也很简单，基本原理就是利用局部对象在函数结束后自动析构的方法。标准库中的 <code>std::lock_guard</code> 就使用了这个方法。 </p>
-<p>于是可以简单的写出这样一个类：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Defer</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    explicit Defer(F f) : _f(f) &#123;&#125;</span><br><span class="line">    ~Defer() &#123;</span><br><span class="line">        _f();</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    F _f;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>需要推迟的部分放在<code>_f</code>中，对象析构时执行<code>_f()</code>。要推迟的东西千奇百怪，不可能为所有东西都定义一个成员，所以简单的，将他们包在一个 <code>lambda</code> 表达式里，对象 hold 住一个<code>lambda</code> 表达式即可。及 <code>_f</code> 保存 <code>lambda</code> 表达式。</p>
-<p><code>lambda</code> 表达式可以用 <code>std::function</code> 来保存，也可以用模板来推导。所以可以这么定义：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Defer</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    explicit Defer(F &amp;&amp;f) : _f(std::forward&lt;F&gt;(f))&#123;&#125;</span><br><span class="line">    ~Defer() &#123;</span><br><span class="line">        _f();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    F _f;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这个模板类创建对象时，需要指定类型，我们不知道，<code>decltype</code> 也不允许推导匿名<code>lambda</code> 表达式（lambda-expression in unevaluated context）。可以定义一个帮助函数来创建对象：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> F&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">MakeObject</span><span class="params">(F &amp;&amp;f)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 此时 F 可以被推导出来</span></span><br><span class="line">    <span class="keyword">return</span> Defer&lt;F&gt;(<span class="built_in">std</span>::forward&lt;F&gt;(f));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>于是简单的 <code>defer</code> 类就成型了，（禁止拷贝与赋值，以防止创建<code>lambda</code>副本，导致<code>defer</code>部分被执行多次）：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _CONCAT(a, b) a##b</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CONCAT(a, b) _CONCAT(a, b)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> DEFER_OBJ CONCAT(__DEFER_,  CONCAT(__func__, __LINE__))</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> defer(expr) const auto &amp;DEFER_OBJ = MakeObject([&amp;]()&#123; expr &#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> F&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Defer</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    explicit Defer(F &amp;&amp;f) : _f(std::forward&lt;F&gt;(f)) &#123;&#125;</span><br><span class="line">    ~Defer() &#123;</span><br><span class="line">        _f();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Defer(Defer &amp;&amp;that) : _f(<span class="built_in">std</span>::move(that._f)) &#123;&#125;</span><br><span class="line"></span><br><span class="line">    Defer() = <span class="keyword">delete</span>;</span><br><span class="line">    Defer(<span class="keyword">const</span> Defer &amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="keyword">operator</span>=(<span class="keyword">const</span> Defer &amp;) = <span class="keyword">delete</span>;</span><br><span class="line">    <span class="keyword">void</span> <span class="keyword">operator</span>=(Defer &amp;&amp;) = <span class="keyword">delete</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    F _f;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> F&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">MakeObject</span><span class="params">(F &amp;&amp;f)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Defer&lt;F&gt;(<span class="built_in">std</span>::forward&lt;F&gt;(f));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>简单的验证一下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    defer( <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"deferred something 1 in function"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; );</span><br><span class="line">    defer( <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"deferred something 2 in function"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; );</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"entering function"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"exiting function"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    defer( <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"deferred something... 1"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; );</span><br><span class="line">    defer( <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"deferred something... 2"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>; );</span><br><span class="line"></span><br><span class="line">    defer( func(); );</span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"bye..."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">bye...</span><br><span class="line">entering function</span><br><span class="line">exiting function</span><br><span class="line">deferred something 2 in function</span><br><span class="line">deferred something 1 in function</span><br><span class="line">deferred something... 2</span><br><span class="line">deferred something... 1</span><br></pre></td></tr></table></figure>
-<p>除了执行顺序倒序之外（析构与构造反序），看起来似乎还可以。</p>
-<p><a href="https://github.com/anonymouss/my-exercises/tree/master/cpp/defer" target="_blank" rel="noopener">完整代码</a></p>
+        <blockquote>
+<p>日常 git tips，持续更新…</p>
+</blockquote>
+<h2 id="撤销单个文件修改"><a href="#撤销单个文件修改" class="headerlink" title="撤销单个文件修改"></a>撤销单个文件修改</h2><ol>
+<li>还没有<code>add</code>到<code>stage</code></li>
+</ol>
+<ul>
+<li><code>git checkout filename</code></li>
+</ul>
+<ol start="2">
+<li><code>add</code>到<code>stage</code>但还没有<code>commit</code></li>
+</ol>
+<ul>
+<li><code>git reset HEAD filename</code> // 移除暂存区</li>
+<li><code>git checkout filename</code></li>
+</ul>
+<ol start="3">
+<li>已经<code>commit</code></li>
+</ol>
+<ul>
+<li><code>git reset HEAD^</code> // 回退</li>
+<li><code>git checkout filename</code></li>
+</ul>
+<h2 id="push时遇到-missing-tree-unpackaed-error"><a href="#push时遇到-missing-tree-unpackaed-error" class="headerlink" title="push时遇到 missing tree / unpackaed error"></a><code>push</code>时遇到 missing tree / unpackaed error</h2><ul>
+<li><code>git push --no-thin xxxx</code> // 禁止 thin pack transfer 优化</li>
+</ul>
+<h2 id="commit之后需要修改author"><a href="#commit之后需要修改author" class="headerlink" title="commit之后需要修改author"></a><code>commit</code>之后需要修改<code>author</code></h2><ul>
+<li><code>git commit --amend --author=&quot;username &lt;username@meow.com&gt;&quot;</code></li>
+</ul>
+<h2 id="push之后修改特定的commit"><a href="#push之后修改特定的commit" class="headerlink" title="push之后修改特定的commit"></a><code>push</code>之后修改特定的<code>commit</code></h2><ul>
+<li><code>git rebase -i HEAD~N</code> // 修改前<code>N</code>个commits</li>
+<li>将对应要修改的commit前面的<code>pick</code>改成<code>edit</code>（<code>p</code> -&gt; <code>e</code>），保存退出</li>
+<li><code>git log</code> 检查当前 <code>HEAD</code> 已经位于要修改的commit</li>
+<li>修改需要修改的文件，<code>git add -u</code>，<code>git commit --amend</code>，<code>git push xxx</code> // 再次提交本commit</li>
+<li><code>git rebase --continue</code> // 恢复</li>
+<li><strong>PS：<code>squash</code>可以将多个commit合并为1个</strong></li>
+</ul>
 
       
     </div>
@@ -532,7 +537,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://jjcong.com/2019/01/24/C-实现简单的-golang-defer/" title="C++ 实现简单的 golang `defer`">http://jjcong.com/2019/01/24/C-实现简单的-golang-defer/</a>
+    <a href="http://jjcong.com/2019/01/28/git-tips/" title="git tips">http://jjcong.com/2019/01/28/git-tips/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -545,7 +550,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag"># C++</a>
+            <a href="/tags/git/" rel="tag"># git</a>
           
         </div>
       
@@ -558,8 +563,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/22/Effective-Modern-C-读书笔记-01-类型推断/" rel="next" title="Effective Modern C++ 读书笔记: 01 类型推断">
-                <i class="fa fa-chevron-left"></i> Effective Modern C++ 读书笔记: 01 类型推断
+              <a href="/2019/01/24/C-实现简单的-golang-defer/" rel="next" title="C++ 实现简单的 golang `defer`">
+                <i class="fa fa-chevron-left"></i> C++ 实现简单的 golang `defer`
               </a>
             
           </div>
@@ -567,10 +572,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/28/git-tips/" rel="prev" title="git tips">
-                git tips <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -621,8 +622,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -745,6 +755,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#撤销单个文件修改"><span class="nav-number">1.</span> <span class="nav-text">撤销单个文件修改</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#push时遇到-missing-tree-unpackaed-error"><span class="nav-number">2.</span> <span class="nav-text">push时遇到 missing tree / unpackaed error</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#commit之后需要修改author"><span class="nav-number">3.</span> <span class="nav-text">commit之后需要修改author</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#push之后修改特定的commit"><span class="nav-number">4.</span> <span class="nav-text">push之后修改特定的commit</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
